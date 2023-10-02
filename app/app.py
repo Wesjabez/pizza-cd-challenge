@@ -23,27 +23,27 @@ db.init_app(app)
 
 @app.route("/")
 def home ():
-    return ""
+    return "This is home"
 
 @app.route("/restaurants" , methods = ["GET"])
 def get_restaurants():
-    restaurants =  Restaurant.querry.all()
+    restaurants =  Restaurant.query.all()
     restaurant_list = []
     for restaurant in restaurants:
         restaurant_data = {
             "id ": restaurant.id,
             "name": restaurant.name,
-            "address": restaurant.adress
+            "address": restaurant.address
         }
         restaurant_list.append(restaurant_data)
 
     return jsonify(restaurant_list)
 
-@app.route("/restaurants/<int:restaurnt_id>", methods = ["GET"])
+@app.route("/restaurants/<int:restaurant_id>", methods = ["GET"])
 def get_restaurant(restaurant_id):
-    restaurant = Restaurant.querry.get(restaurant_id)
+    restaurant = Restaurant.query.get(restaurant_id)
     if restaurant:
-        pizzas = []
+        pizza = []
         for rp in restaurant.restaurant_pizzas:
             pizza_data = {
                 "id": rp.pizza.id,
@@ -53,9 +53,9 @@ def get_restaurant(restaurant_id):
             pizza.append(pizza_data)
             restaurant_data = {
                 "id": restaurant.id,
-                "name":restaurat.name,
-                "address":restaurant.name,
-                "pizza":pizzas
+                "name":restaurant.name,
+                "address":restaurant.address,
+                "pizza":pizza
             }
 
             return  jsonify(restaurant_data)
@@ -64,7 +64,7 @@ def get_restaurant(restaurant_id):
 
 
 app.route("/restaurants/<int:restaurant_id>", methods = ["DELETE"])
-def delete_restaurant(restauraunt_id):
+def delete_restaurant(restaurant_id):
     restaurant = Restaurant.querry.get(restaurant_id)
     if restaurant:
         RestaurantPizza.querry.filter(restaurant_id = restaurant.id).delete()
@@ -74,9 +74,9 @@ def delete_restaurant(restauraunt_id):
     else:
         return jsonify({"error: restaurant id not found"}), 404
 
-app.route("/pizzas", methods = ["GET"])
+@app.route("/pizzas", methods = ["GET"])
 def get_pizzas():
-    pizzas = Pizzas.querry.all()
+    pizzas = Pizza.query.all()
     pizza_list = []
     for pizza in pizzas:
         pizza_data = {
@@ -99,7 +99,7 @@ def create_restaurant_pizza():
         return jsoify({"errors": ["validation errors"]}), 400
     
     pizza =  Pizza.querry.get(pizza_id)
-    restaurant = Restaurant.querry.get(restaurant_id)
+    restaurant = Restaurant.query.get(restaurant_id)
 
     if pizza and restaurant:
         new_rp = RestaurantPizza(price = price, pizza_id= pizza_id, resauarnt_id = restaurant_id )

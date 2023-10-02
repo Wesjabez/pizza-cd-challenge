@@ -1,13 +1,51 @@
+// import React, { useState, useEffect } from 'react';
+
+// const PizzaList = () => {
+//     const [pizzas, setPizzas] = useState([]);
+
+//     useEffect(() => {
+//         fetch('/pizza')
+//             .then(response => {
+//                 if (!response.ok) {
+//                     throw new Error('Network response was not ok');
+//                 }
+//                 return response.json();
+//             })
+//             .then(data => {
+//                 setPizzas(data);
+//             })
+//             .catch(error => {
+//                 console.error('Error fetching pizzas:', error);
+//             });
+//     }, []);
+
+//     return (
+//         <div>
+//             <h1>Pizzas</h1>
+//             <ul>
+//                 {pizzas.map(pizza => (
+//                     <li key={pizza.id}>
+//                         <strong>{pizza.name}</strong> - {pizza.ingredients}
+//                     </li>
+//                 ))}
+//             </ul>
+//         </div>
+//     );
+// };
+
+// export default PizzaList;
+
+
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 const PizzaList = () => {
     const [pizzas, setPizzas] = useState([]);
 
     useEffect(() => {
-        axios.get('/pizzas')
-            .then(response => {
-                setPizzas(response.data);
+        fetch('http://127.0.0.1:5555/pizzas')
+            .then(response => response.json())
+            .then(data => {
+                setPizzas(data);
             })
             .catch(error => {
                 console.error('Error fetching pizzas:', error);
