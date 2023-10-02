@@ -5,10 +5,7 @@ from models.pizza import db as pizza_db, Pizza
 from models.restaurant import db as restaurant_db, Restaurant
 from models.restaurant_pizzas import db as rp_db, RestaurantPizza
 from flask_cors import CORS
-
-# from models.pizza import  Pizza
-# from models.restaurant import Restaurant
-# from models.restaurant_pizzas import RestaurantPizza
+from flask_migrate import Migrate
 
 
 app = Flask(__name__)
@@ -17,6 +14,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] ='sqlite:///pizza_restaurant.db'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 CORS(app)
 db.init_app(app)
+migrate = Migrate(app, db)
 
 
 
